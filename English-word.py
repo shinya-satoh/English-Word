@@ -1,6 +1,7 @@
 import tkinter as tk
 import random as rnd
 import sys
+#import re
 
 JHSONE = {'1': 'egg', '1j':'卵',
 '2': 'bag', '2j':'カバン',
@@ -2571,40 +2572,43 @@ HSTHREE = {'1': 'acknowledge', '1j': '…の存在［正しさ］を認める',
 '410': 'beneath', '410j': '…の下に'}
 
 ENGLISH = [JHSONE, JHSTWO, JHSTHREE, HSONE, HSTWO, HSTHREE]
+
+RED = '\033[31m'
+BLUE = '\033[34m'
+DEFAULT = '\033[0m'
+
 incorrect = []
 
-def problem(english, value, random, incorrect):
+def problem(english, value, random, incorrect, red, blue, default):
 	print("[Q]", english[value][str(random) + "j"], "\n")
 	inp = input("[A]>>> ")
-	if inp == english[value][str(random)]:
-		print("Correct answer!\n")
+	if inp.lower() == english[value][str(random)].lower():
+		print( red + "Correct answer!\n" + default)
 	else:
-		print("Incorrect answer!\n")
+		print(blue + "Incorrect answer!\n" + default)
 		incorrect.append(english[value][str(random)] +\
 			": " + english[value][str(random) + "j"])
 
-def loop(english, value, incorrect):
-	def random(english, value):
-		random = rnd.randint(1, int(len(english[value])/2))
-		return random
+def loop(english, value, incorrect, red, blue, default):
+	random = lambda english, value: rnd.randint(1, int(len(english[value])/2))
 	while True:
-		problem(english, value, random(english, value), incorrect)
+		problem(english, value, random(english, value), incorrect, red, blue, default)
 
-def end(incorrect):
-	print("\nIncorrect answer:\n", incorrect)
+def end(incorrect, blue, default):
+	print(blue + "\nIncorrect answer:\n" + default, incorrect)
 	sys.exit(0)
 
-def main(english, incorrect):
+def main(english, incorrect, red, blue, default):
 	root = tk.Tk()
 	root.title("English-Word")
-	button1 = tk.Button(root, text= '中一英単語', command= lambda: loop(english, 0, incorrect))
-	button2 = tk.Button(root, text= '中二英単語', command= lambda: loop(english, 1, incorrect))
-	button3 = tk.Button(root, text= '中三英単語', command= lambda: loop(english, 2, incorrect))
-	button4 = tk.Button(root, text= '高一英単語', command= lambda: loop(english, 3, incorrect))
-	button5 = tk.Button(root, text= '高二英単語', command= lambda: loop(english, 4, incorrect))
-	button6 = tk.Button(root, text= '高三英単語', command= lambda: loop(english, 5, incorrect))
+	button1 = tk.Button(root, text= '中一英単語', command= lambda: loop(english, 0, incorrect, red, blue, default))
+	button2 = tk.Button(root, text= '中二英単語', command= lambda: loop(english, 1, incorrect, red, blue, default))
+	button3 = tk.Button(root, text= '中三英単語', command= lambda: loop(english, 2, incorrect, red, blue, default))
+	button4 = tk.Button(root, text= '高一英単語', command= lambda: loop(english, 3, incorrect, red, blue, default))
+	button5 = tk.Button(root, text= '高二英単語', command= lambda: loop(english, 4, incorrect, red, blue, default))
+	button6 = tk.Button(root, text= '高三英単語', command= lambda: loop(english, 5, incorrect, red, blue, default))
 	button7 = tk.Button(root, text= '終了',\
-	command= lambda: end(incorrect))
+	command= lambda: end(incorrect, blue, default))
 
 	button1.pack()
 	button2.pack()
@@ -2615,15 +2619,4 @@ def main(english, incorrect):
 	button7.pack()
 	root.mainloop()
 
-main(ENGLISH, incorrect)
-
-
-
-
-
-
-
-
-
-
-
+main(ENGLISH, incorrect, RED, BLUE, DEFAULT)
