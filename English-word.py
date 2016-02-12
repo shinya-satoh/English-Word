@@ -2587,6 +2587,8 @@ def orderproblem(english, value, incorrect, red, blue, default, count):
 		print( red + "Correct answer!\n" + default)
 	else:
 		print(blue + "Incorrect answer!\n" + default)
+		print(red + "Correct answer is: " + default +\
+		 english[value][str(count)] + "\n")
 		incorrect.append(english[value][str(count)] +\
 			": " + english[value][str(count) + "j"])
 
@@ -2604,13 +2606,15 @@ def problem(english, value, random, incorrect, red, blue, default):
 		print( red + "Correct answer!\n" + default)
 	else:
 		print(blue + "Incorrect answer!\n" + default)
+		print(red + "Correct answer is: " + default +\
+		 english[value][str(random)] + "\n")
 		incorrect.append(english[value][str(random)] +\
 			": " + english[value][str(random) + "j"])
 
 def loop(english, value, incorrect, red, blue, default):
-	random = rnd.randint(1, int(len(english[value])/2))
+	random = lambda english, value: rnd.randint(1, int(len(english[value])/2))
 	while True:
-		problem(english, value, random, incorrect, red, blue, default)
+		problem(english, value, random(english, value), incorrect, red, blue, default)
 
 def fullproblem(english, value, random, incorrect, red, blue, default):
 	pass
