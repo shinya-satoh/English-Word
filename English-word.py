@@ -2579,10 +2579,28 @@ DEFAULT = '\033[0m'
 
 incorrect = []
 
+
+def orderproblem(english, value, incorrect, red, blue, default, count):
+	print("[Q]", english[value][str(count) + "j"], "\n")
+	inp = input("[A]>>> ")
+	if inp.lower().replace(" ", "") == english[value][str(count)].lower():
+		print( red + "Correct answer!\n" + default)
+	else:
+		print(blue + "Incorrect answer!\n" + default)
+		incorrect.append(english[value][str(count)] +\
+			": " + english[value][str(count) + "j"])
+
+def orderloop(english, value, incorrect, red, blue, default):
+	count = 1
+	length = int(len(english[value])/2)+1
+	while count < length:
+		orderproblem(english, value, incorrect, red, blue, default, count)
+		count += 1
+
 def problem(english, value, random, incorrect, red, blue, default):
 	print("[Q]", english[value][str(random) + "j"], "\n")
 	inp = input("[A]>>> ")
-	if inp.lower() == english[value][str(random)].lower():
+	if inp.lower().replace(" ", "") == english[value][str(random)].lower():
 		print( red + "Correct answer!\n" + default)
 	else:
 		print(blue + "Incorrect answer!\n" + default)
@@ -2590,9 +2608,15 @@ def problem(english, value, random, incorrect, red, blue, default):
 			": " + english[value][str(random) + "j"])
 
 def loop(english, value, incorrect, red, blue, default):
-	random = lambda english, value: rnd.randint(1, int(len(english[value])/2))
+	random = rnd.randint(1, int(len(english[value])/2))
 	while True:
-		problem(english, value, random(english, value), incorrect, red, blue, default)
+		problem(english, value, random, incorrect, red, blue, default)
+
+def fullproblem(english, value, random, incorrect, red, blue, default):
+	pass
+
+def fullloop(english, value, incorrect, red, blue, default):
+	pass
 
 def end(incorrect, blue, default):
 	print(blue + "\nIncorrect answer:\n" + default, incorrect)
@@ -2601,13 +2625,32 @@ def end(incorrect, blue, default):
 def main(english, incorrect, red, blue, default):
 	root = tk.Tk()
 	root.title("English-Word")
-	button1 = tk.Button(root, text= '中一英単語', command= lambda: loop(english, 0, incorrect, red, blue, default))
-	button2 = tk.Button(root, text= '中二英単語', command= lambda: loop(english, 1, incorrect, red, blue, default))
-	button3 = tk.Button(root, text= '中三英単語', command= lambda: loop(english, 2, incorrect, red, blue, default))
-	button4 = tk.Button(root, text= '高一英単語', command= lambda: loop(english, 3, incorrect, red, blue, default))
-	button5 = tk.Button(root, text= '高二英単語', command= lambda: loop(english, 4, incorrect, red, blue, default))
-	button6 = tk.Button(root, text= '高三英単語', command= lambda: loop(english, 5, incorrect, red, blue, default))
-	button7 = tk.Button(root, text= '終了',\
+	button1 = tk.Button(root, text= '中一英単語', command= lambda: orderloop(english,\
+	 0, incorrect, red, blue, default))
+	button2 = tk.Button(root, text= '中二英単語', command= lambda: orderloop(english,\
+	 1, incorrect, red, blue, default))
+	button3 = tk.Button(root, text= '中三英単語', command= lambda: orderloop(english,\
+	 2, incorrect, red, blue, default))
+	button4 = tk.Button(root, text= '高一英単語', command= lambda: orderloop(english,\
+	 3, incorrect, red, blue, default))
+	button5 = tk.Button(root, text= '高二英単語', command= lambda: orderloop(english,\
+	 4, incorrect, red, blue, default))
+	button6 = tk.Button(root, text= '高三英単語', command= lambda: orderloop(english,\
+	 5, incorrect, red, blue, default))
+	button7 = tk.Button(root, text= 'ランダム中一英単語', command= lambda: loop(english,\
+	 0, incorrect, red, blue, default))
+	button8 = tk.Button(root, text= 'ランダム中二英単語', command= lambda: loop(english,\
+	 1, incorrect, red, blue, default))
+	button9 = tk.Button(root, text= 'ランダム中三英単語', command= lambda: loop(english,\
+	 2, incorrect, red, blue, default))
+	button10 = tk.Button(root, text= 'ランダム高一英単語', command= lambda: loop(english,\
+	 3, incorrect, red, blue, default))
+	button11 = tk.Button(root, text= 'ランダム高二英単語', command= lambda: loop(english,\
+	 4, incorrect, red, blue, default))
+	button12 = tk.Button(root, text= 'ランダム高三英単語', command= lambda: loop(english,\
+	 5, incorrect, red, blue, default))
+	#butto13 = tk.Button(root, text= , command= )
+	button14 = tk.Button(root, text= '終了',\
 	command= lambda: end(incorrect, blue, default))
 
 	button1.pack()
@@ -2617,6 +2660,13 @@ def main(english, incorrect, red, blue, default):
 	button5.pack()
 	button6.pack()
 	button7.pack()
+	button8.pack()
+	button9.pack()
+	button10.pack()
+	button11.pack()
+	button12.pack()
+	#button13.pack()
+	button14.pack()
 	root.mainloop()
 
 main(ENGLISH, incorrect, RED, BLUE, DEFAULT)
